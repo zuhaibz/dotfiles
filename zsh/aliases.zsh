@@ -30,10 +30,10 @@ alias clsym="find -L . -name . -o -type d -prune -o -type l -exec rm {} +"
 alias dcu='docker compose up -d'
 alias dcd='docker compose down'
 
-# use exa if available
-if [[ -x "$(command -v exa)" ]]; then
-  alias ll="exa --icons --git --long"
-  alias l="exa --icons --git --all --long"
+# use eza if available
+if [[ -x "$(command -v eza)" ]]; then
+  alias ll="eza --icons --git --long"
+  alias l="eza --icons --git --all --long"
 else
   alias l="ls -lah ${colorflag}"
   alias ll="ls -lFh ${colorflag}"

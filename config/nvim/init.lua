@@ -154,7 +154,7 @@ opt.fcs = "eob: "
 
 -- Mappings
 g.mapleader = ","
-opt.pastetoggle = "<leader>v"
+-- opt.pastetoggle = "<leader>v"
 
 nnoremap("Q", "<nop>")
 imap("jk", "<Esc>")
