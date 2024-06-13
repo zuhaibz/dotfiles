@@ -1,0 +1,76 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+
+  // ======================== EDITOR ========================
+  "autosave": "on_focus_change",
+  "cursor_blink": true,
+  "inlay_hints": {
+    "enabled": true
+  },
+  "preferred_line_length": 120,
+  "soft_wrap": "preferred_line_length",
+  "show_whitespaces": "all",
+
+  // ======================== APPEARANCE ========================
+  "theme": "Pop N Lock Theme by Luxcium",
+  "ui_font_size": 16,
+  "buffer_font_size": 20,
+  "buffer_font_family": "Monaspace Argon",
+  // "buffer_font_family": "Operator Mono Lig",
+  "buffer_font_features": {
+    "calt": true,
+    "liga": true,
+    "dlig": true,
+    "ss01": true,
+    "ss02": true,
+    "ss03": true,
+    "ss04": true,
+    "ss05": true,
+    "ss06": true,
+    "ss07": true,
+    "ss08": true,
+    "ss09": true,
+    "ss10": true,
+    "ss11": true,
+    "ss12": true,
+    "ss13": true,
+    "ss14": true,
+    "ss15": true,
+    "ss16": true,
+    "ss17": true,
+    "ss18": true,
+    "ss19": true,
+    "ss20": true
+  },
+  // ======================== LANGUAGE SERVER ========================
+  "lsp": {
+    "gopls": {
+      "initialization_options": {
+        "semanticTokens": true,
+        "hints": {
+          "assignVariableTypes": true,
+          "compositeLiteralFields": true,
+          "compositeLiteralTypes": true,
+          "constantValues": true,
+          "functionTypeParameters": true,
+          "parameterNames": true,
+          "rangeVariableTypes": true
+        }
+      }
+    }
+  },
+
+  // ======================== VIM ========================
+  "vim_mode": true
+}
