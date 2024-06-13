@@ -1,15 +1,15 @@
 .netrwhist
 npm-debug.log
-
-plug.vim.old
-
 config/nvim/spell
 config/nvim/shada
-config/nvim/plugged
-config/nvim/autoload/plug.vim
 vim/vim.symlink/spell/
 vim/vim.symlink/plugged/
-
 Brewfile.lock.json
+lazy-lock.json
+config/kitty/kitty-overrides.conf
+config/zed/*
+!config/zed/settings.json
+!config/zed/keymap.json
+!config/zed/themes/
 
 .idea/
