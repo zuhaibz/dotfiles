@@ -2,11 +2,7 @@ local home = os.getenv("HOME")
 local util = require("base.util")
 local theme = require("base.theme")
 
-local _, config = pcall(dofile, home .. "/dotfiles.lua")
-
-if type(config) ~= "table" then
-  config = {}
-end
+local config = util.load_json(home .. "/dotfiles.json") or {}
 
 -- the purpose of this file is to allow for an out-of-git way to set customized configuration for aesthetic things
 -- like fonts, themes, etc.
@@ -15,11 +11,30 @@ end
 -- values.
 local default_config = {
   -- these can be any
-  font = "Monaspace Neon",
-  italic_font = "Monaspace Radon",
+  font = {
+    regular = "Monaspace Neon",
+    italic = "Monaspace Radon",
+  },
+  art = nil,
   icons = theme.icons,
   colors = theme.colors,
-  -- wallpaper_dir = home .. "/Documents/wallpaper",
+  wallpaper = nil,
+  copilot = false,
+  astro = false,
+  fzf = true,
+  zen = false,
+  lsp = {
+    servers = {
+      -- "eslint",
+      -- "tsserver",
+      "lua_ls",
+      -- "denols",
+      -- "astro",
+      -- "tailwindcss",
+      "jsonls",
+      "vimls",
+    },
+  },
 }
 
 return util.table_extend(true, default_config, config)

@@ -2,10 +2,10 @@
 local dotfiles = os.getenv("HOME") .. "/.config/dotfiles"
 package.path = package.path .. ";" .. dotfiles .. "/?.lua;" .. dotfiles .. "/?/?.lua;" .. dotfiles .. "/?/init.lua"
 
-local h = require("utils.helpers")
 local b = require("utils.background")
-local wezterm = require("wezterm")
 local custom_config = require("base.config")
+local h = require("utils.helpers")
+local wezterm = require("wezterm")
 
 local theme = custom_config.theme or b.get_default_theme()
 local assets = wezterm.config_dir .. "/assets"
@@ -17,22 +17,22 @@ local config = {
   window_close_confirmation = "NeverPrompt",
   native_macos_fullscreen_mode = true,
   window_padding = {
-    left = 0,
-    right = 0,
-    top = 0,
-    bottom = 0,
+    left = 2,
+    right = 2,
+    top = 2,
+    bottom = 2,
   },
 
   -- font config
-  font = wezterm.font(custom_config.font, { weight = "Regular" }),
+  font = wezterm.font(custom_config.font.regular, { weight = "Regular" }),
   font_rules = {
     {
       italic = true,
-      font = wezterm.font(custom_config.italic_font, { weight = "Medium" }),
+      font = wezterm.font(custom_config.font.italic, { weight = "Medium" }),
     },
   },
   harfbuzz_features = { "calt", "dlig", "clig=1", "ss01", "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08" },
-  font_size = 20,
+  font_size = 16,
   line_height = 1.1,
   adjust_window_size_when_changing_font_size = false,
 
@@ -52,8 +52,8 @@ if h.is_dark then
     b.get_background(),
   }
 
-  if custom_config["wallpaper_dir"] ~= nil then
-    table.insert(config.background, 1, b.get_random_wallpaper(custom_config.wallpaper_dir .. "/*.{png,jpg,jpeg}"))
+  if custom_config["wallpaper"] ~= nil then
+    table.insert(config.background, 1, b.get_random_wallpaper(custom_config.wallpaper .. "/*.{png,jpg,jpeg}"))
   end
 else
   config.color_scheme = "Catppuccin Latte"
