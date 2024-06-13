@@ -35,3 +35,5 @@ yabai -m config mouse_action2 resize
 yabai -m config mouse_follows_focus off
 yabai -m c config focus_follows_mouse off
 
+# add border for the active and inactive window
+borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 &
