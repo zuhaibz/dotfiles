@@ -11,5 +11,9 @@ config/zsh/.zsh_history
 config/zsh/.zcompdump
 config/zsh/.zsh_sessions
 config/ghostty/overrides
+config/zed/*
+!config/zed/settings.json
+!config/zed/keymap.json
+!config/zed/themes/
 
 .idea/

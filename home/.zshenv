@@ -37,3 +37,4 @@ export GOBIN="$HOME/go/bin"
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
 path=($GOBIN $path)
+. "$HOME/.cargo/env"
