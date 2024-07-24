@@ -11,6 +11,14 @@
     "diagnostics": false,
     "metrics": false
   },
+  // ======================== ASSISTANT ========================
+  "assistant": {
+    "version": "1",
+    "provider": {
+      "default_model": "claude-3-sonnet-20240229",
+      "name": "anthropic"
+    }
+  },
 
   // ======================== EDITOR ========================
   "autosave": "on_focus_change",

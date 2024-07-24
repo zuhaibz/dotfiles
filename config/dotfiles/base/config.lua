@@ -14,6 +14,7 @@ local default_config = {
   font = {
     regular = "Monaspace Neon",
     italic = "Monaspace Radon",
+    size = 18,
   },
   art = nil,
   icons = theme.icons,

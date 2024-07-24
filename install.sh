@@ -16,6 +16,8 @@ linkables=(
   "zsh/.zsh_aliases"
   "zsh/.zsh_functions"
   "zsh/.zsh_prompt"
+  "jetbrains/.ideavimrc"
+  "editorconfig/.editorconfig"
 )
 
 # Configuration home
