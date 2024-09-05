@@ -13,3 +13,4 @@ config/zed/*
 !config/zed/themes/
 
 .idea/
+.aider*
