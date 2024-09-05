@@ -7,17 +7,23 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "language_models": {
+    "anthropic": {
+      "version": "1"
+    }
+  },
   "telemetry": {
     "diagnostics": false,
     "metrics": false
   },
   // ======================== ASSISTANT ========================
   "assistant": {
-    "version": "1",
-    "provider": {
-      "default_model": "claude-3-sonnet-20240229",
-      "name": "anthropic"
-    }
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-3-5-sonnet-20240620"
+    },
+    "version": "2",
+    "provider": null
   },
 
   // ======================== EDITOR ========================
@@ -34,7 +40,9 @@
   "theme": "Pop N Lock Theme by Luxcium",
   "ui_font_size": 16,
   "buffer_font_size": 20,
-  "buffer_font_family": "Monaspace Argon",
+  "buffer_line_height": "comfortable",
+  // "buffer_font_family": "Monaspace Argon",
+  "buffer_font_family": "Rec Mono Casual",
   // "buffer_font_family": "Operator Mono Lig",
   "buffer_font_features": {
     "calt": true,
