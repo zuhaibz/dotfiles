@@ -31,9 +31,9 @@ macos-icon-screen-color = "#1E1E2D"
 mouse-hide-while-typing = true
 
 # Font settings
-font-family = "Monaspace Neon Regular"
-font-family-italic = "Monaspace Radon Var Regular Italic"
-font-family-bold-italic = "Monaspace Radon Var Bold Italic"
+font-family = "Maple Mono NF Regular"
+font-family-italic = "Maple Mono NF Var Regular Italic"
+font-family-bold-italic = "Maple Mono NF Var Bold Italic"
 font-size = 16
 font-feature = +liga
 cursor-style = block
