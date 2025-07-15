@@ -1,0 +1,123 @@
+{
+  "$schema": "https://zed.dev/schema/themes/v0.1.0.json",
+  "name": "Neon Nights",
+  "author": "Assistant",
+  "themes": [
+    {
+      "name": "Neon Nights Dark",
+      "appearance": "dark",
+      "style": {
+        "border": "#1A1A2E",
+        "border.variant": "#1A1A2E",
+        "border.focused": "#FF2E63",
+        "border.selected": "#FF2E63",
+        "border.transparent": "#1A1A2E",
+        "border.disabled": "#2D2D44",
+        "elevated_surface.background": "#1A1A2E",
+        "surface.background": "#0F0F1B",
+        "background": "#0F0F1B",
+        "element.background": "#0F0F1B",
+        "element.hover": "#2D2D44",
+        "element.active": "#2D2D44",
+        "element.selected": "#2D2D44",
+        "element.disabled": "#1A1A2E",
+        "drop_target.background": "#1A1A2E",
+        "ghost_element.background": "#00000000",
+        "ghost_element.hover": "#2D2D44",
+        "ghost_element.active": "#2D2D44",
+        "ghost_element.selected": "#2D2D44",
+        "ghost_element.disabled": "#1A1A2E",
+        "text": "#EAEAEA",
+        "text.muted": "#B8B8B8",
+        "text.placeholder": "#808080",
+        "text.disabled": "#4D4D4D",
+        "text.accent": "#FF2E63",
+        "icon": "#EAEAEA",
+        "icon.muted": "#B8B8B8",
+        "icon.disabled": "#4D4D4D",
+        "icon.placeholder": "#808080",
+        "icon.accent": "#FF2E63",
+        "status_bar.background": "#0F0F1B",
+        "title_bar.background": "#0F0F1B",
+        "toolbar.background": "#0F0F1B",
+        "tab_bar.background": "#0F0F1B",
+        "tab.inactive_background": "#1A1A2E",
+        "tab.active_background": "#0F0F1B",
+        "search.match_background": "#FF2E6333",
+        "panel.background": "#0F0F1B",
+        "scrollbar.thumb.background": "#2D2D44",
+        "scrollbar.thumb.hover_background": "#3D3D54",
+        "editor.foreground": "#EAEAEA",
+        "editor.background": "#0F0F1B",
+        "editor.gutter.background": "#0F0F1B",
+        "editor.active_line.background": "#1A1A2E",
+        "editor.line_number": "#808080",
+        "editor.active_line_number": "#FF2E63",
+        "terminal.background": "#0F0F1B",
+        "terminal.foreground": "#EAEAEA",
+        "terminal.ansi.bright_black": "#4D4D4D",
+        "terminal.ansi.black": "#1A1A2E",
+        "terminal.ansi.red": "#FF2E63",
+        "terminal.ansi.bright_red": "#FF5983",
+        "terminal.ansi.green": "#00FF9F",
+        "terminal.ansi.bright_green": "#33FFAF",
+        "terminal.ansi.yellow": "#FFD700",
+        "terminal.ansi.bright_yellow": "#FFE033",
+        "terminal.ansi.blue": "#00BFFF",
+        "terminal.ansi.bright_blue": "#33CFFF",
+        "terminal.ansi.magenta": "#FF00FF",
+        "terminal.ansi.bright_magenta": "#FF33FF",
+        "terminal.ansi.cyan": "#00FFFF",
+        "terminal.ansi.bright_cyan": "#33FFFF",
+        "terminal.ansi.white": "#EAEAEA",
+        "terminal.ansi.bright_white": "#FFFFFF",
+        "players": [
+          {
+            "cursor": "#FF2E63",
+            "background": "#FF2E6333",
+            "selection": "#FF2E6333"
+          }
+        ],
+        "syntax": {
+          "comment": {
+            "color": "#666666",
+            "font_style": "italic"
+          },
+          "constant": {
+            "color": "#FF00FF",
+            "font_weight": "bold"
+          },
+          "function": {
+            "color": "#00FFFF"
+          },
+          "keyword": {
+            "color": "#FF2E63",
+            "font_weight": "bold"
+          },
+          "string": {
+            "color": "#FFD700"
+          },
+          "number": {
+            "color": "#00FF9F"
+          },
+          "operator": {
+            "color": "#FF00FF"
+          },
+          "type": {
+            "color": "#00BFFF",
+            "font_weight": "bold"
+          },
+          "variable": {
+            "color": "#EAEAEA"
+          },
+          "tag": {
+            "color": "#FF2E63"
+          },
+          "attribute": {
+            "color": "#00FFFF"
+          }
+        }
+      }
+    }
+  ]
+}
