@@ -43,3 +43,9 @@ md:*.{md,mdx}
 
 # follow symlinks
 --follow
+
+# include hidden files
+--hidden
+
+# Don't go into the .git/ directory
+--glob=!.git/*

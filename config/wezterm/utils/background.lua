@@ -7,7 +7,7 @@ M.get_default_theme = function()
 end
 
 M.get_background = function(dark, light)
-  dark = dark or 0.85
+  dark = dark or 0.65
   light = light or 0.9
 
   return {
@@ -61,7 +61,7 @@ M.get_animation = function(animation)
     vertical_align = "Middle",
     width = "100%",
     height = "Cover",
-    opacity = 0.10,
+    opacity = 0.45,
     hsb = {
       hue = 0.9,
       saturation = 0.8,

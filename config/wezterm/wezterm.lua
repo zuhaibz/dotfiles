@@ -1,59 +1,82 @@
--- configure wezterm to use the ~/.config/dotfiles directory for shared lua modules
-local dotfiles = os.getenv("HOME") .. "/.config/dotfiles"
-package.path = package.path .. ";" .. dotfiles .. "/?.lua;" .. dotfiles .. "/?/?.lua;" .. dotfiles .. "/?/init.lua"
-
 local b = require("utils.background")
-local custom_config = require("base.config")
 local h = require("utils.helpers")
 local wezterm = require("wezterm")
-
-local theme = custom_config.theme or b.get_default_theme()
 local assets = wezterm.config_dir .. "/assets"
+local config = wezterm.config_builder()
 
-local config = {
-  macos_window_background_blur = 30,
-  enable_tab_bar = false,
-  window_decorations = "RESIZE",
-  window_close_confirmation = "NeverPrompt",
-  native_macos_fullscreen_mode = true,
-  window_padding = {
-    left = 2,
-    right = 2,
-    top = 2,
-    bottom = 2,
-  },
+-- set this to true to enable fancy background
+local fancy = true
 
-  -- font config
-  font = wezterm.font(custom_config.font.regular, { weight = "Regular" }),
-  font_rules = {
-    {
-      italic = true,
-      font = wezterm.font(custom_config.font.italic, { weight = "Medium" }),
-    },
-  },
-  harfbuzz_features = { "calt", "dlig", "clig=1", "cv62", "cv65", "ss03", "ss07", "ss08", "ss09", "ss10", "ss11" },
-  font_size = custom_config.font.size,
-  line_height = 1.1,
-  adjust_window_size_when_changing_font_size = false,
+config.max_fps = 120
+config.prefer_egl = true
 
-  -- keys config
-  send_composed_key_when_left_alt_is_pressed = true,
-  send_composed_key_when_right_alt_is_pressed = false,
+config.colors = {
+  cursor_bg = "#f5c06f",
+  cursor_border = "#f5c06f",
+  indexed = { [239] = "lightslategray" },
 }
 
-if h.is_dark then
-  config.color_scheme = theme
-  config.set_environment_variables = {
-    THEME_FLAVOUR = "mocha",
-  }
-  config.background = {
-    -- custom_config.wallpaper_dir and b.get_random_wallpaper(custom_config.wallpaper_dir .. "/*.{png,jpg,jpeg}") or {},
-    -- b.get_random_animation(assets .. "/*.gif"),
-    b.get_background(),
-  }
+config.macos_window_background_blur = 30
+config.enable_tab_bar = false
+config.window_decorations = "RESIZE"
+config.window_close_confirmation = "NeverPrompt"
+config.native_macos_fullscreen_mode = true
+config.window_padding = {
+  left = 0,
+  right = 0,
+  top = 0,
+  bottom = 0,
+}
 
-  if custom_config["wallpaper"] ~= nil then
-    table.insert(config.background, 1, b.get_random_wallpaper(custom_config.wallpaper .. "/*.{png,jpg,jpeg}"))
+-- font config
+config.font = wezterm.font("Maple Mono NF", { weight = "Regular" })
+config.font_rules = {
+  {
+    intensity = "Normal",
+    italic = true,
+    font = wezterm.font("Maple Mono NF", { weight = "Regular" }),
+  },
+  {
+    intensity = "Bold",
+    italic = false,
+    font = wezterm.font("Maple Mono NF", { weight = "ExtraBold" }),
+  },
+  {
+    intensity = "Bold",
+    italic = true,
+    font = wezterm.font("Maple Mono NF", { weight = "ExtraBold" }),
+  },
+}
+config.harfbuzz_features = { "calt", "dlig", "clig=1", "ss01", "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08" }
+config.font_size = 18
+config.line_height = 1.1
+config.adjust_window_size_when_changing_font_size = false
+
+-- keys config
+config.send_composed_key_when_left_alt_is_pressed = true
+config.send_composed_key_when_right_alt_is_pressed = false
+
+if h.is_dark then
+  -- local custom = wezterm.color.get_builtin_schemes()["Catppuccin Macchiato"]
+  -- -- set a custom, darker background color for Macchiato
+  -- custom.background = "#0b0b12"
+
+  -- override the Catppuccin Macchiato color scheme
+  -- config.color_schemes = {
+  --   ["Catppuccin Macchiato"] = custom,
+  -- }
+
+  -- and use the custom color scheme
+  -- config.color_scheme = "Catppuccin Macchiato"
+  config.color_scheme = "Catppuccin Macchiato"
+  config.set_environment_variables = {
+    THEME_FLAVOUR = "macchiato",
+  }
+  if fancy then
+    config.background = {
+      b.get_background(),
+      b.get_animation(assets .. "/blob_blue.gif"),
+    }
   end
 else
   config.color_scheme = "Catppuccin Latte"
@@ -65,5 +88,7 @@ else
     b.get_background(),
   }
 end
+
+wezterm.plugin.require("https://gitlab.com/xarvex/presentation.wez").apply_to_config(config)
 
 return config

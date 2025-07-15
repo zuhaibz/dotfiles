@@ -4,4 +4,8 @@
 -- Use the nisi config
 
 local nisi = require("nisi")
-nisi.setup()
+nisi.setup({
+  python = true,
+  transparent = true,
+  colorscheme = "tokyonight",
+})

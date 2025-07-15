@@ -9,19 +9,21 @@ local utils = require("nisi.utils")
 ---@field startup_color string|nil The color to use for the startup art
 ---@field zen boolean|nil Whether to show a minimal UI (hide statusline, line numbers, etc.)
 ---@field copilot boolean|nil Whether copilot is enabled
+---@field python boolean|nil Whether python is enabled
+---@field avante boolean|nil Whether avante is enabled
 ---@field fzf boolean|nil Whether too configure fzf for tooling like telescope
----@field git boolean|nil Whether or not to configure the dotfiles for git
 ---@field prefer_git boolean|nil Whether to prefer using git for dependencies over other options like curl
 ---@field proxy string|nil A proxy URL to use for certain network functions
 ---@field colorscheme string|fun()|nil What to set the colorscheme to and/or how
+---@field transparent boolean|nil Whether to use a transparent background for the colorscheme
 local config = {
   lazypath = vim.fn.stdpath("data") .. "lazy/lazy.nvim",
   startup_art = "nicknisi",
   startup_color = "#653CAD",
   zen = false,
   copilot = true,
+  avante = true,
   fzf = true,
-  git = true,
   proxy = nil,
   prefer_git = false,
   colorscheme = function()
@@ -33,6 +35,7 @@ local config = {
 
     vim.cmd("colorscheme catppuccin")
   end,
+  transparent = false,
 }
 
 ---Assign a user config to the config table
@@ -49,27 +52,20 @@ end
 local M = {}
 local lazy_loaded = false
 local setup_called = false
-local dotfiles = os.getenv("HOME") .. "/.config/dotfiles"
-local paths = {
-  dotfiles .. "/?.lua",
-  dotfiles .. "/?/?.lua",
-  dotfiles .. "/?/init.lua",
-}
-
-for _, path in ipairs(paths) do
-  utils.add_path(path)
-end
 
 local function load_lazy(path)
-  if not vim.loop.fs_stat(path) then
-    vim.fn.system({
-      "git",
-      "clone",
-      "--filter=blob:none",
-      "https://github.com/folke/lazy.nvim.git",
-      "--branch=stable",
-      path,
-    })
+  if not (vim.uv or vim.loop).fs_stat(path) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, path })
+    if vim.v.shell_error ~= 0 then
+      vim.api.nvim_echo({
+        { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+        { out, "WarningMsg" },
+        { "\nPress any key to exit..." },
+      }, true, {})
+      vim.fn.getchar()
+      os.exit(1)
+    end
   end
   vim.opt.rtp:prepend(path)
 end
@@ -97,9 +93,13 @@ local function init_plugins()
     M.add_plugin({ import = "nisi.plugins.extras.copilot" })
   end
 
-  -- if config.astro then
-  --   table.insert(plugins, { import = "nisi.plugins.extras.astro" })
-  -- end
+  if config.python then
+    M.add_plugin({ import = "nisi.plugins.extras.python" })
+  end
+
+  if config.avante then
+    M.add_plugin({ import = "nisi.plugins.extras.avante" })
+  end
 
   if config.fzf then
     M.add_plugin({ import = "nisi.plugins.extras.fzf" })
@@ -126,16 +126,19 @@ local function patch_syntax()
 
   vim.diagnostic.config({
     virtual_text = true,
+    virtual_lines = {
+      current_line = true,
+    },
     signs = true,
     update_in_insert = true,
     severity_sort = true,
   })
 
   -- make comments and HTML attributes italic
-  vim.cmd([[highlight Comment cterm=italic term=italic gui=italic]])
-  vim.cmd([[highlight htmlArg cterm=italic term=italic gui=italic]])
-  vim.cmd([[highlight xmlAttrib cterm=italic term=italic gui=italic]])
-  vim.cmd([[highlight Normal ctermbg=none]])
+  -- vim.api.nvim_set_hl(0, "Comment", { italic = true })
+  -- vim.api.nvim_set_hl(0, "htmlArg", { italic = true })
+  -- vim.api.nvim_set_hl(0, "xmlAttrib", { italic = true })
+  -- vim.cmd([[highlight Normal ctermbg=none]])
 end
 
 ---Apply the colorscheme setting
@@ -162,6 +165,7 @@ function M.setup(user_config)
     vim.env.https_proxy = config.proxy
   end
 
+  require("nisi.config.filetype")
   require("nisi.config.options")
   require("nisi.config.keymaps")
   init_plugins()

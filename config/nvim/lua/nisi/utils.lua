@@ -138,4 +138,87 @@ function M.exists_in_table(table, value)
   return false
 end
 
+---Load a shared Lua package from a path
+---Example: load_shared_lua_package(os.getenv("HOME") .. "/.config/dotfiles")
+---@param package_path string
+function M.load_shared_lua_package(package_path)
+  local paths = {
+    package_path .. "/?.lua",
+    package_path .. "/?/?.lua",
+    package_path .. "/?/init.lua",
+  }
+
+  for _, path in ipairs(paths) do
+    M.add_path(path)
+  end
+end
+
+---Copy the current block of text to the system clipboard with normalized indentation
+function M.copy_normalized_block()
+  local mode = vim.fn.mode()
+
+  if mode ~= "v" and mode ~= "V" then
+    return
+  end
+
+  vim.cmd([[silent normal! "xy]])
+  local text = vim.fn.getreg("x")
+  local lines = vim.split(text, "\n", { plain = true })
+
+  local converted = {}
+  for _, line in ipairs(lines) do
+    local l = line:gsub("\t", " ")
+    table.insert(converted, l)
+  end
+
+  local min_indent = math.huge
+  for _, line in ipairs(converted) do
+    if line:match("[^%s]") then
+      local indent = #(line:match("^%s*"))
+      min_indent = math.min(min_indent, indent)
+    end
+  end
+
+  min_indent = min_indent == math.huge and 0 or min_indent
+
+  local result = {}
+  for _, line in ipairs(converted) do
+    if line:match("^%s*$") then
+      table.insert(result, "")
+    else
+      local processed = line:sub(min_indent + 1)
+      processed = processed:gsub("^%s+", function(spaces)
+        return string.rep("  ", math.floor(#spaces / 2))
+      end)
+      table.insert(result, processed)
+    end
+  end
+
+  local normalized = table.concat(result, "\n")
+  vim.fn.setreg("+", normalized)
+  vim.notify("Copied normalized text to clipboard")
+end
+
+---Create a function that takes a table with a function and its arguments, returning a new function
+---@param t table A table where the first element is a function and the rest are its arguments
+---@return function A new function that calls the original function with the provided arguments
+function M.fun(t)
+  local f = t[1]
+  local args = { unpack(t, 2) }
+  return function()
+    return f(unpack(args))
+  end
+end
+
+---Create a function that takes a function and its arguments, returning a new function
+---@param f function The function to call
+---@param ... any The arguments to pass to the function
+---@return function A new function that calls the original function with the provided arguments
+function M.fn(f, ...)
+  local args = { ... }
+  return function(...)
+    return f(unpack(args), ...)
+  end
+end
+
 return M

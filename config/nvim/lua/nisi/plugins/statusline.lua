@@ -4,7 +4,7 @@ local icons = require("nisi.assets").icons
 return {
   {
     "nvim-lualine/lualine.nvim",
-    enabled = true,
+    cond = not vim.g.vscode,
     event = "VeryLazy",
     opts = function(plugin)
       if plugin.override then
@@ -54,8 +54,10 @@ return {
         options = {
           theme = "auto",
           icons_enabled = true,
-          section_separators = { right = "", left = "" },
-          -- component_separators = "", --{ right = "", left = "" },
+          -- section_separators = { right = "", left = "" },
+          -- -- component_separators = "", --{ right = "", left = "" },
+          section_separators = { left = "", right = "" },
+          -- component_separators = { left = "", right = "" },
           globalstatus = true,
           component_separators = { left = "", right = "" },
           disabled_filetypes = { statusline = { "dashboard", "lazy", "alpha" } },
