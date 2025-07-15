@@ -68,3 +68,5 @@ brew "z" # switch between most used directories
 brew "zoxide" # switch between most used directories
 brew "zsh" # zsh (latest)
 brew "pkgxdev/made/pkgx" # npx, but for anything
+brew "pyenv" # for managing python versions
+brew "nodejs" # nodejs latest

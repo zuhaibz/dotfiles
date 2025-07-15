@@ -1,6 +1,6 @@
 local home = os.getenv("HOME")
-local util = require("base.util")
 local theme = require("base.theme")
+local util = require("base.util")
 
 local config = util.load_json(home .. "/dotfiles.json") or {}
 
@@ -12,8 +12,10 @@ local config = util.load_json(home .. "/dotfiles.json") or {}
 local default_config = {
   -- these can be any
   font = {
-    regular = "Monaspace Neon",
-    italic = "Monaspace Radon",
+    -- regular = "Monaspace Neon",
+    -- italic = "Monaspace Radon",
+    regular = "Maple Mono",
+    italic = "Maple Mono",
     size = 18,
   },
   art = nil,

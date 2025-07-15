@@ -1,5 +1,26 @@
 // Zed key bindings
 [
+  {
+    "context": "Editor",
+    "bindings": {
+      // ----------------- SPLITTING/SIZING ------------------
+      "shift-alt-ctrl-shift-cmd-o": "pane::SplitRight",
+      "shift-alt-ctrl-shift-cmd-u": "pane::SplitLeft",
+      "shift-alt-ctrl-shift-cmd-i": "pane::SplitDown",
+      "shift-alt-ctrl-shift-cmd-j": "pane::SplitUp",
+
+      // "cmd-p": ["task::Spawn", { "task_name": "file_finder" }],
+      // "cmd-f": ["task::Spawn", { "task_name": "find_in_files" }]
+      // ======================== ZEN ========================
+      ", z i": "editor::ToggleIndentGuides",
+      ", z t": "editor::ToggleTabBar",
+      ", z a": "workspace::CloseAllDocks",
+      ", z l": "editor::ToggleLineNumbers",
+      ", z z": ["workspace::SendKeystrokes", "space z t space z a"]
+      // =====================================================
+    }
+  },
+
   // ======================== VIM ========================
   {
     "context": "Editor && (vim_mode == normal || vim_mode == visual) && !VimWaiting && !menu",
@@ -7,8 +28,8 @@
       // put key-bindings here if you want them to work in normal & visual mode
       "; ;": "workspace::Save",
       ", t": "file_finder::Toggle",
-      ", g": "project_symbols::Toggle",
-      ", G": "outline::Toggle",
+      ", G": "project_symbols::Toggle",
+      ", g": "outline::Toggle",
       ", k": "pane::RevealInProjectPanel",
       "g r": "editor::FindAllReferences",
       ", f": "editor::Format",
@@ -30,11 +51,28 @@
     }
   },
   {
-    "context": "Editor && vim_mode == insert && !menu",
+    "context": "Editor && vim_mode == insert",
     "bindings": {
       // put key-bindings here if you want them to work in insert mode
       // e.g.
       "j k": "vim::NormalBefore" // remap jk in insert mode to escape.
+    }
+  },
+  // Subword navigation
+  {
+    "context": "VimControl && !menu && vim_mode != operator",
+    "bindings": {
+      "w": "vim::NextSubwordStart",
+      "b": "vim::PreviousSubwordStart",
+      "e": "vim::NextSubwordEnd",
+      "g e": "vim::PreviousSubwordEnd"
+    }
+  },
+  {
+    "context": "vim_mode == normal || vim_mode == visual",
+    "bindings": {
+      "s": "vim::PushSneak",
+      "shift-s": "vim::PushSneakBackward"
     }
   }
 ]
