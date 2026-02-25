@@ -7,74 +7,76 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "project_panel": {
+    "hide_gitignore": false,
+  },
   "edit_predictions": {
     "mode": "eager",
     "copilot": {
       "proxy": null,
-      "proxy_no_verify": null
+      "proxy_no_verify": null,
     },
-    "enabled_in_text_threads": true
+    "enabled_in_text_threads": true,
   },
   "features": {
     "edit_prediction_provider": "copilot",
-    "copilot": true
+    "copilot": true,
   },
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
   "preview_tabs": {
-    "enabled": false
+    "enabled": false,
   },
   "collaboration_panel": {
-    "button": false
+    "button": false,
   },
   "outline_panel": {
-    "button": false
+    "button": false,
   },
   "notification_panel": {
     // Whether to show the notification panel button in the status bar.
-    "button": false
+    "button": false,
   },
   "debug": {
-    "ignore_vscode_config": true
+    "ignore_vscode_config": true,
   },
 
   // ======================== ASSISTANT ========================
   "language_models": {
-    "anthropic": {
-      "version": "1"
-    }
+    "anthropic": {},
   },
   "agent": {
+    "always_allow_tool_actions": true,
     "default_model": {
       "provider": "copilot_chat",
-      "model": "claude-3.7-sonnet"
+      "model": "gemini-3-pro-preview",
     },
     "default_profile": "write",
-    "version": "2"
+    "model_parameters": [],
   },
   "enable_experimental_live_diffs": true,
 
   // ======================== IDE ========================
   "autosave": "on_focus_change",
   "tab_bar": {
-    "show": true
+    "show": true,
   },
   "tabs": {
     "git_status": true,
     "file_icons": true,
-    "show_diagnostics": "all"
+    "show_diagnostics": "all",
   },
 
   "toolbar": {
     "breadcrumbs": true,
     "quick_actions": false,
     "selections_menu": false,
-    "button": false
+    "button": false,
   },
   "gutter": {
-    "line_numbers": true
+    "line_numbers": true,
   },
   // Whether to pop the completions menu while typing in an editor without
   // explicitly requesting it.
@@ -83,16 +85,16 @@
   // ======================== EDITOR ========================
   "cursor_blink": true,
   "inlay_hints": {
-    "enabled": true
+    "enabled": true,
   },
   "preferred_line_length": 180,
   "soft_wrap": "preferred_line_length",
   "show_whitespaces": "all",
   "indent_guides": {
     "enabled": false,
-    "coloring": "indent_aware"
+    "coloring": "indent_aware",
   },
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "use_smartcase_search": true,
 
   // ======================== APPEARANCE ========================
@@ -101,7 +103,7 @@
   "icon_theme": "Catppuccin Latte",
   "ui_font_size": 16,
   "ui_font_features": {
-    "calt": true
+    "calt": true,
   },
   "buffer_font_size": 20,
   "buffer_line_height": "comfortable",
@@ -127,14 +129,14 @@
     "ss08": true, // Double headed arrows and reverse arrows ligatures (>>=, -<<, ->>, >>- ...)
     "ss09": true, // Asciitilde equal as not equal to ligature (~=, !=)
     "ss10": true, // Approximately equal to and approximately not equal to ligatures (=~, !~)
-    "ss11": true // Equal and extra punctuation ligatures (|=, /=, ?=, &=, ...)
+    "ss11": true, // Equal and extra punctuation ligatures (|=, /=, ?=, &=, ...)
   },
   "experimental.theme_overrides": {
     "syntax": {
       "comment": {
-        "font_style": "italic"
-      }
-    }
+        "font_style": "italic",
+      },
+    },
   },
   "terminal": {
     "copy_on_select": true,
@@ -158,26 +160,43 @@
       "ss08": true, // Double headed arrows and reverse arrows ligatures (>>=, -<<, ->>, >>- ...)
       "ss09": true, // Asciitilde equal as not equal to ligature (~=, !=)
       "ss10": true, // Approximately equal to and approximately not equal to ligatures (=~, !~)
-      "ss11": true // Equal and extra punctuation ligatures (|=, /=, ?=, &=, ...)
-    }
+      "ss11": true, // Equal and extra punctuation ligatures (|=, /=, ?=, &=, ...)
+    },
   },
   // ======================== LANGUAGE SERVER ========================
   "languages": {
+    "JSON": {
+      "prettier": {
+        "plugins": ["prettier-plugin-multiline-arrays"],
+        "multilineArraysWrapThreshold": 0,
+      },
+    },
     "YAML": {
-      "formatter": "language_server"
-    }
+      "formatter": "language_server",
+    },
   },
   "lsp": {
+    "basedpyright": {
+      "settings": {
+        "basedpyright.analysis": {
+          "diagnosticMode": "workspace",
+        },
+        "python.pythonPath": ".venv/bin/python",
+        "python.analysis": {
+          "diagnosticMode": "workspace",
+        },
+      },
+    },
     "yaml-language-server": {
       "settings": {
         "yaml": {
           // "keyOrdering": true,
           "format": {
             "enable": false,
-            "singleQuote": true
-          }
-        }
-      }
+            "singleQuote": true,
+          },
+        },
+      },
     },
     // https://github.com/golang/tools/blob/master/gopls/doc/settings.md
     "gopls": {
@@ -185,7 +204,7 @@
         "formatting.gofumpt": false, // more strict formatting which I like
         "codelenses": {
           "gc_details": true,
-          "test": true
+          "test": true,
         },
         "semanticTokens": true,
         "experimentalPostfixCompletions": true,
@@ -195,7 +214,7 @@
           "unusedparams": true,
           "unusedvariable": true,
           "unusedwrite": true,
-          "useany": true
+          "useany": true,
         },
         "hints": {
           "assignVariableTypes": false,
@@ -204,15 +223,15 @@
           "constantValues": false,
           "functionTypeParameters": false,
           "parameterNames": true,
-          "rangeVariableTypes": false
-        }
-      }
-    }
+          "rangeVariableTypes": false,
+        },
+      },
+    },
   },
   "go.testTimeout": "600s",
   "go.testEnvVars": {
     "RUN_INTEGRATION_TESTS": "true",
-    "TEST_AGAINST_REMOTE": "false"
+    "TEST_AGAINST_REMOTE": "false",
   },
 
   // ======================== VIM ========================
@@ -220,6 +239,6 @@
   "vim": {
     "toggle_relative_line_numbers": true,
     "use_multiline_find": true,
-    "use_smartcase_find": true
-  }
+    "use_smartcase_find": true,
+  },
 }
