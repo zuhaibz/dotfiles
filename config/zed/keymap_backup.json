@@ -1,0 +1,48 @@
+// Zed key bindings
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-p": ["task::Spawn", { "task_name": "File Finder", "reveal_target": "center" }],
+      "cmd-f": ["task::Spawn", { "task_name": "Find in Files", "reveal_target": "center" }]
+    }
+  },
+
+  // ======================== VIM ========================
+  {
+    "context": "Editor && (vim_mode == normal || vim_mode == visual) && !VimWaiting && !menu",
+    "bindings": {
+      // put key-bindings here if you want them to work in normal & visual mode
+      "; ;": "workspace::Save",
+      ", t": "file_finder::Toggle",
+      ", G": "project_symbols::Toggle",
+      ", g": "outline::Toggle",
+      ", k": "pane::RevealInProjectPanel",
+      "g r": "editor::FindAllReferences",
+      ", f": "editor::Format",
+      "g I": "editor::GoToImplementationSplit"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      // put key-bindings here if you want them to work only in normal mode
+      // "down": ["workspace::SendKeystrokes", "4 j"]
+      // "up": ["workspace::SendKeystrokes", "4 k"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
+    "bindings": {
+      // visual, visual line & visual block modes
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      // put key-bindings here if you want them to work in insert mode
+      // e.g.
+      "j k": "vim::NormalBefore" // remap jk in insert mode to escape.
+    }
+  }
+]

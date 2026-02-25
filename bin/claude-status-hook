@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Claude Code hook for tmux status integration
+# Updates tmux session status files based on Claude's working state
+#
+# States:
+#   working - Claude is executing tools
+#   waiting - Claude finished, awaiting user input
+#   idle    - No active session
+
+STATUS_DIR="$HOME/.cache/claude-status"
+mkdir -p "$STATUS_DIR"
+
+# Read JSON from stdin (required by Claude Code hooks)
+cat > /dev/null
+
+# Get tmux session if in tmux
+if [ -n "$TMUX" ]; then
+  TMUX_SESSION=$(tmux display-message -p '#{session_name}' 2>/dev/null)
+
+  # Fallback: parse TMUX env var if command fails
+  if [ -z "$TMUX_SESSION" ]; then
+    SOCKET_PATH=$(echo "$TMUX" | cut -d',' -f1)
+    TMUX_SESSION=$(basename "$SOCKET_PATH")
+  fi
+
+  if [ -n "$TMUX_SESSION" ]; then
+    STATUS_FILE="$STATUS_DIR/${TMUX_SESSION}.status"
+
+    case "$1" in
+      "PreToolUse")
+        echo "working" > "$STATUS_FILE"
+        ;;
+      "waiting")
+        # Only set by Notification matchers (permission_prompt, elicitation_dialog, idle_prompt)
+        echo "waiting" > "$STATUS_FILE"
+        ;;
+      "Stop"|"SubagentStop"|"SessionEnd")
+        echo "idle" > "$STATUS_FILE"
+        ;;
+    esac
+  fi
+fi
+
+exit 0
