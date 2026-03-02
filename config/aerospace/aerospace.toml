@@ -9,9 +9,9 @@ after-login-command = []
 # You can use it to add commands that run after AeroSpace startup.
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = [
-  'exec-and-forget borders'
-]
+# after-startup-command = [
+#   'exec-and-forget borders'
+# ]
 
 # Start AeroSpace at login
 start-at-login = true
@@ -214,6 +214,10 @@ run = 'move-node-to-workspace D'
 if.app-id = 'com.microsoft.VSCode'
 run = 'move-node-to-workspace D'
 
+[[on-window-detected]]
+if.app-id = 'dev.zed.Zed-Preview'
+run = 'move-node-to-workspace D'
+
 ## Browsers
 
 [[on-window-detected]]
@@ -228,6 +232,10 @@ run = 'move-node-to-workspace W'
 if.app-id = 'app.zen-browser.zen'
 run = 'move-node-to-workspace W'
 
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome.canary'
+run = 'move-node-to-workspace W'
+
 # Productivity
 
 [[on-window-detected]]
@@ -240,6 +248,10 @@ run = 'move-node-to-workspace S'
 
 [[on-window-detected]]
 if.app-id = 'com.mimestream.Mimestream'
+run = 'move-node-to-workspace S'
+
+[[on-window-detected]]
+if.app-id = 'com.readdle.SparkDesktop'
 run = 'move-node-to-workspace S'
 
 [[on-window-detected]]
@@ -270,6 +282,11 @@ run = 'move-node-to-workspace Z'
 if.during-aerospace-startup = false
 if.app-id = 'app.zen-browser.zen'
 if.window-title-regex-substring = 'Picture-in-Picture'
+run = ['layout floating']
+
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Music'
 run = ['layout floating']
 
 [[on-window-detected]]
@@ -303,4 +320,3 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.rogueamoeba.audiohijack'
 run = 'layout floating'
-

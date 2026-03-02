@@ -1,23 +1,13 @@
 local lsp_utils = require("nisi.plugins.lsp.utils")
 local make_conf = lsp_utils.make_conf
-local lspconfig = require("lspconfig")
 local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 local utils = require("nisi.utils")
 local fn = utils.fn
-local border = {
-  { "🭽", "FloatBorder" },
-  { "▔", "FloatBorder" },
-  { "🭾", "FloatBorder" },
-  { "▕", "FloatBorder" },
-  { "🭿", "FloatBorder" },
-  { "▁", "FloatBorder" },
-  { "🭼", "FloatBorder" },
-  { "▏", "FloatBorder" },
-}
-
+local border = "rounded"
 local servers = {
   "eslint",
+  "elixirls",
   "ts_ls",
   "lua_ls",
   "denols",
@@ -26,7 +16,6 @@ local servers = {
   "intelephense",
   "tailwindcss",
   "jsonls",
-  "pylsp",
   "ruby_lsp",
   "pylsp",
   "vimls",
@@ -34,95 +23,115 @@ local servers = {
 
 local M = {}
 
--- _G makes this function available to vimscript lua calls
-_G.lsp_organize_imports = lsp_utils.lsp_organize_imports
-
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
-    -- TODO: move this to typescript
-    vim.cmd([[command! OR lua lsp_organize_imports()]])
+    vim.api.nvim_buf_create_user_command(ev.buf, "OR", lsp_utils.lsp_organize_imports, {})
 
-    local function keymap(key, action, buf, desc)
-      local opts = { noremap = true, silent = true, desc = desc }
-      if buf then
-        opts.buffer = ev.buf
-      end
-      vim.keymap.set("n", key, action, opts)
+    local function map(mode, lhs, rhs, desc)
+      vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = desc, silent = true })
     end
 
-    keymap("<leader>aa", lsp_utils.lsp_show_diagnostics, false, "Show diagnostics")
-    keymap("[d", fn(vim.diagnostic.jump, { count = -1 }), false, "Go to previous diagnostic")
-    keymap("]d", fn(vim.diagnostic.jump, { count = 1 }), false, "Go to next diagnostic")
-    keymap("<leader>aq", vim.diagnostic.setloclist, false, "Send diagnostics to loclist")
-
-    keymap("gO", lsp_utils.lsp_organize_imports, true, "Organize imports")
-    keymap("gd", vim.lsp.buf.definition, true, "Go to definition")
-    keymap("gD", vim.lsp.buf.declaration, true, "Go to declaration")
-    keymap("go", vim.lsp.buf.type_definition, true, "Go to type definition")
-    keymap("gr", vim.lsp.buf.rename, true, "Rename")
-    keymap("gR", vim.lsp.buf.references, true, "Show references")
-    keymap("gy", vim.lsp.buf.type_definition, true, "")
-    keymap("K", vim.lsp.buf.hover, true, "Show hover")
-    keymap("S", vim.lsp.buf.signature_help, true, "Show signature")
-    keymap("ga", vim.lsp.buf.code_action, true, "Show LSP code actions")
+    map("n", "gO", lsp_utils.lsp_organize_imports, "Organize imports")
+    map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+    map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+    map("n", "go", vim.lsp.buf.type_definition, "Go to type definition")
+    map("n", "gr", vim.lsp.buf.rename, "Rename")
+    map("n", "gR", vim.lsp.buf.references, "Show references")
+    map("n", "gy", vim.lsp.buf.type_definition, "Go to type definition")
+    map("n", "K", vim.lsp.buf.hover, "Show hover")
+    map("n", "S", vim.lsp.buf.signature_help, "Show signature")
+    map("n", "ga", vim.lsp.buf.code_action, "Show LSP code actions")
+    map("v", "ga", vim.lsp.buf.code_action, "Show LSP code actions")
+    map("n", "<RightMouse>", "<cmd>:popup mousemenu<cr>", "Show context menu")
 
     if vim.lsp.inlay_hint then
-      keymap("<Leader>hh", function()
+      map("n", "<Leader>hh", function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-      end, false, "Toggle inlay [h]ints")
+      end, "Toggle inlay [h]ints")
     end
 
-    -- FIXME the following keymaps are not working when using a autocmd to set up
-    -- vim.keymap.set("x", "gA", vim.lsp.buf.range_code_action, bufopts)
-    -- vim.keymap.set("n", "<C-x><C-x>", vim.lsp.buf.signature_help, bufopts)
+    map("n", "<C-x><C-x>", vim.lsp.buf.signature_help, "Show signature help")
 
     -- set up mousemenu options for lsp
     vim.cmd([[:amenu 10.100 mousemenu.Goto\ Definition <cmd>Telescope lsp_definitions<cr>]])
     vim.cmd([[:amenu 10.110 mousemenu.References <cmd>Telescope lsp_references<cr>]])
     vim.cmd([[:amenu 10.120 mousemenu.Implementation <cmd>Telescope lsp_implementations<cr>]])
-
-    vim.keymap.set("n", "<RightMouse>", "<cmd>:popup mousemenu<cr>")
   end,
 })
 
 function M.setup()
+  -- Set diagnostic keymaps globally
+  vim.keymap.set("n", "<leader>aa", lsp_utils.lsp_show_diagnostics, { desc = "Show diagnostics" })
+  vim.keymap.set("n", "[d", fn(vim.diagnostic.jump, { count = -1 }), { desc = "Go to previous diagnostic" })
+  vim.keymap.set("n", "]d", fn(vim.diagnostic.jump, { count = 1 }), { desc = "Go to next diagnostic" })
+  vim.keymap.set("n", "<leader>aq", vim.diagnostic.setloclist, { desc = "Send diagnostics to loclist" })
+
   mason.setup({ ui = { border = border } })
 
-  mason_lspconfig.setup({
-    ensure_installed = servers,
-    automatic_installation = true,
-    ui = { check_outdated_servers_on_open = true },
+  vim.diagnostic.config({
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = "",
+        [vim.diagnostic.severity.WARN] = "",
+        [vim.diagnostic.severity.INFO] = "",
+        [vim.diagnostic.severity.HINT] = "",
+      },
+      numhl = {
+        [vim.diagnostic.severity.WARN] = "WarningMsg",
+        [vim.diagnostic.severity.ERROR] = "ErrorMsg",
+        [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+        [vim.diagnostic.severity.HINT] = "DiagnosticHint",
+      },
+    },
+    virtual_text = {
+      spacing = 4,
+      source = "if_many",
+      prefix = "●",
+    },
+    float = {
+      border = "rounded",
+      source = "if_many",
+      header = "",
+      prefix = "",
+    },
+    underline = true,
+    update_in_insert = false,
+    severity_sort = true,
   })
 
-  local handlers = {
-    function(server_name)
-      lspconfig[server_name].setup(make_conf({}))
-    end,
-  }
-
-  if utils.exists_in_table(servers, "eslint_d") then
-    handlers["eslint"] = function()
-      lspconfig.eslint.setup({
-        root_dir = require("lspconfig/util").root_pattern(
+  -- Configure LSP servers using vim.lsp.config() before mason-lspconfig.setup()
+  if utils.exists_in_table(servers, "eslint") then
+    vim.lsp.config(
+      "eslint",
+      make_conf({
+        root_markers = {
           "eslint.config.js",
           "eslint.config.mjs",
           ".eslintrc.js",
           ".eslintrc.json",
-          ".eslintrc"
-        ),
+          ".eslintrc",
+        },
       })
-    end
+    )
   end
 
   if utils.exists_in_table(servers, "tailwindcss") then
-    handlers["tailwindcss"] = function()
-      lspconfig.tailwindcss.setup(make_conf({
-        root_dir = require("lspconfig/util").root_pattern(
+    vim.lsp.config(
+      "tailwindcss",
+      make_conf({
+        root_markers = {
           "tailwind.config.js",
           "tailwind.config.ts",
-          "tailwind.config.cjs"
-        ),
+          "tailwind.config.cjs",
+        },
+        init_options = {
+          userLanguages = {
+            elixir = "html-eex",
+            eelixir = "html-eex",
+            heex = "html-eex",
+          },
+        },
         settings = {
           tailwindCSS = {
             lint = {
@@ -134,37 +143,18 @@ function M.setup()
               recommendedVariantOrder = "warning",
               unusedClass = "warning",
             },
-            experimental = {
-              -- classRegex = {
-              --   "tw`([^`]*)",
-              --   'tw="([^"]*)',
-              --   'tw={"([^"}]*)',
-              --   "tw\\.\\w+`([^`]*)",
-              --   "tw\\(.*?\\)`([^`]*)",
-
-              --   "cn`([^`]*)",
-              --   'cn="([^"]*)',
-              --   'cn={"([^"}]*)',
-              --   "cn\\.\\w+`([^`]*)",
-              --   "cn\\(.*?\\)`([^`]*)",
-
-              --   { "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
-              --   { "classnames\\(([^)]*)\\)", "'([^']*)'" },
-              --   { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-              --   "cva\\(([^)(]*(?:\\([^)(]*(?:\\([^)(]*(?:\\([^)(]*\\)[^)(]*)*\\)[^)(]*)*\\)[^)(]*)*)\\)",
-              --   "'([^']*)'",
-              -- },
-            },
+            experimental = {},
             validate = true,
           },
         },
-      }))
-    end
+      })
+    )
   end
 
   if utils.exists_in_table(servers, "pylsp") then
-    handlers["pylsp"] = function()
-      lspconfig.pylsp.setup(make_conf({
+    vim.lsp.config(
+      "pylsp",
+      make_conf({
         settings = {
           pylsp = {
             plugins = {
@@ -179,7 +169,7 @@ function M.setup()
                 include_params = true,
               },
               rope_completion = { enabled = true },
-              autopep8 = { enabled = false }, -- Disable if using black formatter
+              autopep8 = { enabled = false },
               yapf = { enabled = false },
               black = { enabled = true },
               mypy = { enabled = true },
@@ -187,22 +177,23 @@ function M.setup()
             },
           },
         },
-      }))
-    end
+      })
+    )
   end
 
   if utils.exists_in_table(servers, "ts_ls") then
-    handlers["ts_ls"] = function()
-      lspconfig.ts_ls.setup(make_conf({
+    vim.lsp.config(
+      "ts_ls",
+      make_conf({
         handlers = {
           ["textDocument/definition"] = function(err, result, ctx, ...)
-            if #result > 1 then
+            if result and #result > 1 then
               result = { result[1] }
             end
             vim.lsp.handlers["textDocument/definition"](err, result, ctx, ...)
           end,
         },
-        root_dir = require("lspconfig/util").root_pattern("tsconfig.json"),
+        root_markers = { "tsconfig.json" },
         settings = {
           typescript = {
             inlayHints = {
@@ -210,10 +201,10 @@ function M.setup()
               includeInlayFunctionLikeReturnTypeHints = true,
               includeInlayFunctionParameterTypeHints = true,
               includeInlayParameterNameHints = "all",
-              includeInlayParameterNameHintsWhenArgumentMatchesName = true, -- false
+              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
               includeInlayPropertyDeclarationTypeHints = true,
               includeInlayVariableTypeHints = true,
-              includeInlayVariableTypeHintsWhenTypeMatchesName = true, -- false
+              includeInlayVariableTypeHintsWhenTypeMatchesName = true,
             },
           },
           javascript = {
@@ -229,13 +220,14 @@ function M.setup()
             },
           },
         },
-      }))
-    end
+      })
+    )
   end
 
   if utils.exists_in_table(servers, "jsonls") then
-    handlers["jsonls"] = function()
-      lspconfig.jsonls.setup(make_conf({
+    vim.lsp.config(
+      "jsonls",
+      make_conf({
         cmd = { "vscode-json-language-server", "--stdio" },
         filetypes = { "json", "jsonc" },
         settings = {
@@ -283,36 +275,37 @@ function M.setup()
                   ".stylelintrc.json",
                   "stylelint.config.json",
                 },
-                url = "http://json.schemastore.org/stylelintrc.json",
+                url = "https://json.schemastore.org/stylelintrc.json",
               },
             },
           },
         },
-      }))
-    end
+      })
+    )
   end
 
   if utils.exists_in_table(servers, "denols") then
-    handlers["denols"] = function()
-      lspconfig.denols.setup(make_conf({
+    vim.lsp.config(
+      "denols",
+      make_conf({
         handlers = {
           ["textDocument/definition"] = function(err, result, ctx, ...)
-            vim.notify("Using new definition handler")
-            if #result > 1 then
+            if result and #result > 1 then
               result = { result[1] }
             end
             vim.lsp.handlers["textDocument/definition"](err, result, ctx, ...)
           end,
         },
-        root_dir = require("lspconfig/util").root_pattern("deno.json", "deno.jsonc"),
+        root_markers = { "deno.json", "deno.jsonc" },
         init_options = { lint = true },
-      }))
-    end
+      })
+    )
   end
 
   if utils.exists_in_table(servers, "lua_ls") then
-    handlers["lua_ls"] = function()
-      lspconfig.lua_ls.setup(make_conf({
+    vim.lsp.config(
+      "lua_ls",
+      make_conf({
         settings = {
           Lua = {
             runtime = {
@@ -335,76 +328,54 @@ function M.setup()
             },
           },
         },
-      }))
-    end
+      })
+    )
   end
 
   if utils.exists_in_table(servers, "intelephense") then
-    handlers["intelephense"] = function()
-      lspconfig.intelephense.setup(make_conf({
+    vim.lsp.config(
+      "intelephense",
+      make_conf({
         cmd = { "intelephense", "--stdio" },
         filetypes = { "php" },
-        single_file_support = true,
-        root_dir = require("lspconfig/util").root_pattern("composer.json", ".git"),
-      }))
-    end
+        workspace_required = false,
+        root_markers = { "composer.json", ".git" },
+      })
+    )
   end
 
   if utils.exists_in_table(servers, "vimls") then
-    handlers["vimls"] = function()
-      lspconfig.vimls.setup(make_conf({
+    vim.lsp.config(
+      "vimls",
+      make_conf({
         init_options = { isNeovim = true },
-      }))
-    end
+      })
+    )
   end
 
-  if utils.exists_in_table(servers, "diagnosticls") then
-    handlers["diagnosticls"] = function()
-      lspconfig.diagnosticls.setup(make_conf({
-        settings = {
-          filetypes = { "sh" },
-          init_options = {
-            linters = {
-              shellcheck = {
-                sourceName = "shellcheck",
-                command = "shellcheck",
-                debounce = 100,
-                args = { "--format=gcc", "-" },
-                offsetLine = 0,
-                offsetColumn = 0,
-                formatLines = 1,
-                formatPattern = {
-                  "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
-                  { line = 1, column = 2, message = 4, security = 3 },
-                },
-                securities = { error = "error", warning = "warning", note = "info" },
-              },
-            },
-            filetypes = { sh = "shellcheck" },
-          },
-        },
-      }))
-    end
-  end
-
-  vim.diagnostic.config({
-    signs = {
-      text = {
-        [vim.diagnostic.severity.ERROR] = "",
-        [vim.diagnostic.severity.WARN] = "",
-        [vim.diagnostic.severity.INFO] = "",
-        [vim.diagnostic.severity.HINT] = "",
-      },
-      numhl = {
-        [vim.diagnostic.severity.WARN] = "WarningMsg",
-        [vim.diagnostic.severity.ERROR] = "ErrorMsg",
-        [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
-        [vim.diagnostic.severity.HINT] = "DiagnosticHint",
-      },
+  -- Setup mason-lspconfig with automatic_enable
+  -- Exclude conflicting TypeScript servers from automatic enable
+  mason_lspconfig.setup({
+    ensure_installed = servers,
+    automatic_enable = {
+      exclude = { "denols", "ts_ls" },
     },
   })
 
-  mason_lspconfig.setup_handlers(handlers)
+  -- Manually enable TypeScript server based on project type
+  -- This is necessary because both denols and ts_ls handle the same filetypes,
+  -- so we need explicit detection to prevent conflicts
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+    callback = function()
+      -- Deno projects take precedence
+      if vim.fs.root(0, { "deno.json", "deno.jsonc" }) then
+        vim.lsp.enable("denols")
+      elseif vim.fs.root(0, { "tsconfig.json", "jsconfig.json", "package.json" }) then
+        vim.lsp.enable("ts_ls")
+      end
+    end,
+  })
 end
 
 return M
