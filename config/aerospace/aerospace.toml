@@ -214,6 +214,10 @@ run = 'move-node-to-workspace D'
 if.app-id = 'com.microsoft.VSCode'
 run = 'move-node-to-workspace D'
 
+[[on-window-detected]]
+if.app-id = 'dev.zed.Zed-Preview'
+run = 'move-node-to-workspace D'
+
 ## Browsers
 
 [[on-window-detected]]
@@ -316,4 +320,3 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.rogueamoeba.audiohijack'
 run = 'layout floating'
-
