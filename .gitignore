@@ -15,6 +15,17 @@ node_modules/
 build/
 config/karabiner/automatic_backups/
 
+# claude — track only config, ignore app-generated content
+home/.claude/*
+!home/.claude/settings.json
+!home/.claude/CLAUDE.md
+
+# pi agent — track only config, ignore runtime data
+home/.pi/agent/auth.json
+home/.pi/agent/sessions/
+home/.pi/agent/git/
+home/.pi/agent/run-history.jsonl
+
 .idea/
 .aider*
 

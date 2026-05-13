@@ -14,7 +14,7 @@ autoload -U compinit add-zsh-hook
 compinit
 
 # setup PATH
-for dir in $HOME/.cargo/bin $HOME/.local/bin /usr/local/opt/grep/libexec/gnubin /usr/local/sbin $DOTFILES/bin $HOME/bin; do
+for dir in $HOME/.bun/bin $HOME/.cargo/bin $HOME/.local/bin /usr/local/opt/grep/libexec/gnubin /usr/local/sbin $DOTFILES/bin $HOME/bin; do
   prepend_path $dir
 done
 
@@ -113,8 +113,6 @@ zfetch robbyrussell/oh-my-zsh plugins/ssh-agent
 zfetch robbyrussell/oh-my-zsh plugins/pyenv
 zfetch b4b4r07/cli-finder
 
-command -v fnm &>/dev/null && eval "$(fnm env --use-on-cd)"
-
 [[ -e ~/.terminfo ]] && export TERMINFO_DIRS=~/.terminfo:/usr/share/terminfo
 
 ########################################################
@@ -166,8 +164,13 @@ if command -v pnpm &>/dev/null; then
   [[ ":$PATH:" != *":$PNPM_HOME:"* ]] && export PATH="$PNPM_HOME:$PATH"
 fi
 
-if command -v pyenv &>/dev/null; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init -)"
+# mise: per-directory tool version switching (interactive shells)
+# For cron/scripts, set PATH=$HOME/.local/share/mise/shims:... in the crontab
+# or use `mise exec -- <cmd>` directly.
+if command -v mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+fi
+
+if command -v jj &>/dev/null; then
+  source <(jj util completion zsh)
 fi
