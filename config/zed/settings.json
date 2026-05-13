@@ -7,19 +7,36 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "auto_update": false,
+  "cli_default_open_behavior": "existing_window",
+  "diff_view_style": "unified",
+  "git_panel": {
+    "dock": "left",
+  },
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry"
+    },
+    "codex-acp": {
+      "type": "registry",
+    },
+    "gemini": {
+      "type": "registry",
+    },
+    "opencode": {
+      "type": "registry",
+    },
+  },
   "project_panel": {
+    "dock": "left",
     "hide_gitignore": false,
   },
   "edit_predictions": {
+    "provider": "copilot",
     "mode": "eager",
-    "copilot": {
-      "proxy": null,
-      "proxy_no_verify": null,
-    },
     "enabled_in_text_threads": true,
   },
   "features": {
-    "edit_prediction_provider": "copilot",
     "copilot": true,
   },
   "telemetry": {
@@ -30,9 +47,11 @@
     "enabled": false,
   },
   "collaboration_panel": {
+    "dock": "left",
     "button": false,
   },
   "outline_panel": {
+    "dock": "left",
     "button": false,
   },
   "notification_panel": {
@@ -42,22 +61,30 @@
   "debug": {
     "ignore_vscode_config": true,
   },
-
   // ======================== ASSISTANT ========================
   "language_models": {
     "anthropic": {},
   },
   "agent": {
-    "always_allow_tool_actions": true,
+    "sidebar_side": "right",
+    "tool_permissions": {
+      "default": "allow",
+    },
+    "dock": "right",
     "default_model": {
+      "effort": "medium",
+      "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "gemini-3-pro-preview",
+      "model": "gpt-5.4",
     },
     "default_profile": "write",
     "model_parameters": [],
+    "thread_summary_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-5.4",
+    },
   },
   "enable_experimental_live_diffs": true,
-
   // ======================== IDE ========================
   "autosave": "on_focus_change",
   "tab_bar": {
@@ -68,7 +95,6 @@
     "file_icons": true,
     "show_diagnostics": "all",
   },
-
   "toolbar": {
     "breadcrumbs": true,
     "quick_actions": false,
@@ -81,26 +107,23 @@
   // Whether to pop the completions menu while typing in an editor without
   // explicitly requesting it.
   "show_completions_on_input": true,
-
   // ======================== EDITOR ========================
   "cursor_blink": true,
   "inlay_hints": {
     "enabled": true,
   },
-  "preferred_line_length": 180,
-  "soft_wrap": "preferred_line_length",
+  "preferred_line_length": 100,
+  "soft_wrap": "editor_width",
   "show_whitespaces": "all",
   "indent_guides": {
-    "enabled": false,
+    "enabled": true,
     "coloring": "indent_aware",
   },
-  "relative_line_numbers": "enabled",
   "use_smartcase_search": true,
-
   // ======================== APPEARANCE ========================
   // "theme": "Colorizer",
-  "theme": "XY-Zed",
-  "icon_theme": "Catppuccin Latte",
+  "theme": "Snazzy Theme",
+  "icon_theme": "Material Icon Theme",
   "ui_font_size": 16,
   "ui_font_features": {
     "calt": true,
@@ -110,13 +133,14 @@
   // "buffer_font_family": "Monaspace Neon",
   // "buffer_font_family": "Rec Mono Casual",
   "buffer_font_family": "Maple Mono NF",
-  "buffer_font_fallbacks": ["Rec Mono Casual"],
+  "buffer_font_fallbacks": [
+    "Rec Mono Casual"
+  ],
   // "buffer_font_family": "Operator Mono Lig",
   "buffer_font_features": {
     "calt": true,
     "liga": true,
     "dlig": true,
-
     // Maple Mono features
     "cv62": true, // Alternative ? with larger openings
     "cv65": true, // Alternative & in handwriting style
@@ -141,13 +165,14 @@
   "terminal": {
     "copy_on_select": true,
     "font_family": "Maple Mono",
-    "font_fallbacks": ["Symbols Nerd Font Mono"],
+    "font_fallbacks": [
+      "Symbols Nerd Font Mono"
+    ],
     "font_size": 20,
     "font_features": {
       "calt": true,
       "liga": true,
       "dlig": true,
-
       // Maple Mono features
       "cv62": true, // Alternative ? with larger openings
       "cv65": true, // Alternative & in handwriting style
@@ -167,9 +192,17 @@
   "languages": {
     "JSON": {
       "prettier": {
-        "plugins": ["prettier-plugin-multiline-arrays"],
+        "plugins": [
+          "prettier-plugin-multiline-arrays"
+        ],
         "multilineArraysWrapThreshold": 0,
       },
+    },
+    "JSONC": {
+      "formatter": "language_server",
+      "prettier": {
+        "allowed": false
+      }
     },
     "YAML": {
       "formatter": "language_server",
@@ -180,6 +213,7 @@
       "settings": {
         "basedpyright.analysis": {
           "diagnosticMode": "workspace",
+          "typeCheckingMode": "basic",
         },
         "python.pythonPath": ".venv/bin/python",
         "python.analysis": {
@@ -233,11 +267,10 @@
     "RUN_INTEGRATION_TESTS": "true",
     "TEST_AGAINST_REMOTE": "false",
   },
-
   // ======================== VIM ========================
   "vim_mode": true,
   "vim": {
-    "toggle_relative_line_numbers": true,
+    "toggle_relative_line_numbers": false,
     "use_multiline_find": true,
     "use_smartcase_find": true,
   },
