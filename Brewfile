@@ -39,7 +39,6 @@ brew 'cloc'                            # lines of code counter
 brew 'entr'                            # file watcher / command runner
 brew 'eza'                             # ls alternative
 brew 'fd'                              # find alternative
-brew 'fnm'                             # Fast Node version manager
 brew 'gum'                             # fancy UI utilities
 brew 'rbenv'                           # Ruby version manager
 brew 'fzf'                             # Fuzzy file searcher, used in scripts and in vim
@@ -51,6 +50,7 @@ brew 'highlight'                       # code syntax highlighting
 brew 'btop'                            # a top alternative
 brew 'jq'                              # work with JSON files in shell scripts
 brew 'lazygit'                         # a better git UI
+brew 'mise'                            # mise-en-place dev env tool
 brew 'neovim'                          # A better vim
 brew 'python'                          # python (latest)
 brew 'ripgrep'                         # very fast file searcher
