@@ -63,9 +63,33 @@ tmux set -g message-style "fg=${thm_cyan},bg=${thm_fg_gutter},align=centre"
 tmux set -g message-command-style "fg=${thm_cyan},bg=${thm_fg_gutter},align=centre"
 
 # Pane borders
-tmux set-window-option -g pane-active-border-style "fg=${thm_fg_gutter},bg=${thm_fg_gutter}"
-tmux set-window-option -g pane-border-style "fg=${thm_fg_gutter},bg=${thm_fg_gutter}"
-tmux set-window-option -g pane-border-lines simple
+tmux set-window-option -g pane-border-style "fg=${thm_fg_gutter},bg=default"
+tmux set-window-option -g pane-active-border-style "fg=${thm_magenta2},bg=default"
+tmux set-window-option -g pane-border-lines double
+# Border arrow indicator off — the pill title already marks the active pane.
+# Re-enable with 'both' (or 'arrows'/'colour') if you want the pointer too.
+tmux set-window-option -g pane-border-indicators off
+
+# Per-pane title: pane index in a square colored pill, then the command name.
+# Active: bright magenta pill + bold name. Inactive: muted pill + dim name.
+tmux set-window-option -g pane-border-status top
+# Title:    1  <icon> name   — index in a rounded powerline pill ( round caps),
+# nerd-font app icon (via bin/nerdwin), then name. Active: bright magenta pill + bold name.
+# Inactive: muted pill + dim name.  Square-pill variant: swap the   caps for   (U+E0B6/E0B4 -> nothing/spaces).
+# Claude sets its process title to its version (e.g. 2.1.220); the s|...| regex maps it back to "claude".
+# Pill end-caps, built via printf so the raw glyphs need not live in this file.
+# Round:  / .  Square block: set both to ''.  Triangle:  / . Slant:  / .
+pill_l=$(printf ''); pill_r=$(printf '')
+tmux set-window-option -g pane-border-format " #{?pane_active,#[fg=${thm_bg}]#[bg=${thm_magenta2}]#[bold] #{pane_index} #[nobold]#[default] #[fg=${thm_fg}]#[bold]#{pane_current_command}#[nobold],#[fg=${thm_dark5}]#[bg=${thm_bg_highlight}] #{pane_index} #[default] #[fg=${thm_dark5}]#{pane_current_command}} #[default] "
+
+# Dim inactive plain-shell panes (no effect on full-screen TUI panes — they paint every cell).
+# NOTE: active-style fg MUST be an explicit color, not "default" — in tmux "default" inherits
+# window-style (the dim value), which would dim the active pane too. ${thm_fg} = theme's bright fg.
+# Dimmer inactive -> ${thm_dark5}; add ",bg=${thm_bg_dark1}" to darken bg too (drops transparency).
+# tmux set -g window-active-style "fg=${thm_fg},bg=default"
+# tmux set -g window-style "fg=${thm_dark5},bg=default"
+tmux set -g window-active-style "fg=default,bg=default"
+tmux set -g window-style "fg=default,bg=default"
 
 # Window status
 tmux setw -g window-status-activity-style "fg=${thm_fg},none"

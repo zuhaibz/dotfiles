@@ -50,7 +50,7 @@ indent_style = tab
 
 [*.cs]
 # Character Set: UTF-8 with byte order mark (see also StyleCop rule SA1412)
-# charset = utf-8-bom
+charset = utf-8-bom
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-language-conventions?view=vs-2019
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference?view=vs-2019
 # Organize usings

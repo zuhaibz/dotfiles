@@ -25,6 +25,8 @@ home/.pi/agent/auth.json
 home/.pi/agent/sessions/
 home/.pi/agent/git/
 home/.pi/agent/run-history.jsonl
+home/.pi/agent/models-store.json
+home/.pi/agent/skills/
 
 .idea/
 .aider*

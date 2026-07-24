@@ -14,6 +14,13 @@
     "dock": "left",
   },
   "agent_servers": {
+    "claude-acp": {
+      "default_config_options": {
+        "mode": "bypassPermissions",
+        "agent": "default"
+      },
+      "type": "registry"
+    },
     "github-copilot-cli": {
       "type": "registry"
     },
@@ -66,16 +73,24 @@
     "anthropic": {},
   },
   "agent": {
+    "sandbox_permissions": {
+      "network_hosts": [
+        "raw.githubusercontent.com",
+        "github.com",
+        "api.github.com"
+      ]
+    },
+    "limit_content_width": false,
     "sidebar_side": "right",
     "tool_permissions": {
       "default": "allow",
     },
     "dock": "right",
     "default_model": {
-      "effort": "medium",
+      "effort": "high",
       "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "gpt-5.4",
+      "model": "claude-sonnet-5",
     },
     "default_profile": "write",
     "model_parameters": [],
@@ -111,6 +126,10 @@
   "cursor_blink": true,
   "inlay_hints": {
     "enabled": true,
+    "show_value_hints": false,
+    "show_other_hints": false,
+    "show_parameter_hints": false,
+    "show_type_hints": false
   },
   "preferred_line_length": 100,
   "soft_wrap": "editor_width",
@@ -163,6 +182,7 @@
     },
   },
   "terminal": {
+    "max_scroll_history_lines": 100000,
     "copy_on_select": true,
     "font_family": "Maple Mono",
     "font_fallbacks": [

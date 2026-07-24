@@ -65,9 +65,7 @@
       "Bash(which *)",
       "ExitPlanMode(*)",
       "WebFetch(domain:*)",
-      "WebSearch",
-      "mcp__plugin_*",
-      "mcp__claude_ai_*"
+      "WebSearch"
     ],
     "deny": [
       "Read(./.env)",
@@ -99,7 +97,7 @@
       "~/.claude/"
     ]
   },
-  "model": "claude-opus-4-6[1m]",
+  "model": "claude-opus-4-8[1m]",
   "hooks": {
     "Notification": [
       {
@@ -216,7 +214,8 @@
     "workos@workos": true,
     "image-gen@nicknisi": true,
     "sidequest@nicknisi": true,
-    "ruby-lsp@claude-plugins-official": true
+    "ruby-lsp@claude-plugins-official": true,
+    "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
     "obsidian-skills": {
@@ -231,6 +230,12 @@
         "repo": "openai/codex-plugin-cc"
       },
       "autoUpdate": true
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
     }
   },
   "spinnerVerbs": {
@@ -394,9 +399,10 @@
     ]
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "theme": "custom:moonstone",
+  "editorMode": "vim",
   "teammateMode": "tmux",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,

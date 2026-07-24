@@ -5,7 +5,7 @@ local assets = wezterm.config_dir .. "/assets"
 local config = wezterm.config_builder()
 
 -- set this to true to enable fancy background
-local fancy = true
+local fancy = false
 
 config.max_fps = 120
 config.prefer_egl = true
